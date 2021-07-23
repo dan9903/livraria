@@ -27,3 +27,4 @@ hs_err_pid*
 .project
 target/
 .apt_generated_tests/
+data/
