@@ -29,3 +29,4 @@ target/
 .apt_generated_tests/
 data/
 .factorypath
+.vscode/
