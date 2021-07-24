@@ -6,7 +6,6 @@ import java.util.stream.StreamSupport;
 
 import com.ibm.livraria.model.Book;
 import com.ibm.livraria.model.dto.BookDTO;
-import com.ibm.livraria.model.exception.BookNotFoundException;
 import com.ibm.livraria.repository.BookRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +20,11 @@ public class BookService {
   }
 
   public BookDTO addBook(BookDTO a_bookDTO) {
-    findBySbn(a_bookDTO.getSbn());
-    Book book = Book.from(a_bookDTO);
-    bookRepository.save(book);
+    Book book = findBySbn(a_bookDTO.getSbn());
+    if (book == null) {
+      book = Book.from(a_bookDTO);
+      bookRepository.save(book);
+    }
     return BookDTO.from(book);
   }
 
@@ -56,7 +57,7 @@ public class BookService {
   }
 
   private Book findBySbn(String a_sbn) {
-    return bookRepository.findById(a_sbn).orElseThrow(() -> new BookNotFoundException(a_sbn));
+    return bookRepository.findById(a_sbn).orElse(null);
   }
 
   private final BookRepository bookRepository;
