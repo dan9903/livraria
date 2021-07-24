@@ -1,9 +1,14 @@
 package com.ibm.livraria.model.dto;
 
 import com.ibm.livraria.model.Book;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class BookDTO {
   public static BookDTO from(Book a_entity) {
     BookDTO dto = new BookDTO();
