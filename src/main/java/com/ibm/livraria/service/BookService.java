@@ -21,11 +21,12 @@ public class BookService {
 
   public BookDTO addBook(BookDTO a_bookDTO) {
     Book book = findBySbn(a_bookDTO.getSbn());
-    if (book == null) {
+    if (book.getSbn().isEmpty()) {
       book = Book.from(a_bookDTO);
       bookRepository.save(book);
+      return BookDTO.from(book);
     }
-    return BookDTO.from(book);
+    return null;
   }
 
   public List<BookDTO> getAllBooks() {
@@ -34,30 +35,40 @@ public class BookService {
   }
 
   public BookDTO getBook(String a_snb) {
-    return BookDTO.from(findBySbn(a_snb));
+    BookDTO bookDTO = BookDTO.from(findBySbn(a_snb));
+    if (bookDTO.getSbn() == null) {
+      bookDTO = null;
+    }
+    return bookDTO;
   }
 
   public BookDTO editBook(BookDTO a_bookDTO) {
     Book book = findBySbn(a_bookDTO.getSbn());
-    // setting new values on book variable
-    book.setName(a_bookDTO.getName());
-    book.setAuthor(a_bookDTO.getAuthor());
-    book.setDescription(a_bookDTO.getDescription());
-    book.setAmount(a_bookDTO.getAmount());
-    // updating on database
-    bookRepository.save(book);
+    if (!book.getSbn().isEmpty()) {
+      // setting new values on book variable
+      book.setName(a_bookDTO.getName());
+      book.setAuthor(a_bookDTO.getAuthor());
+      book.setDescription(a_bookDTO.getDescription());
+      book.setAmount(a_bookDTO.getAmount());
+      // updating on database
+      bookRepository.save(book);
+      return BookDTO.from(book);
+    }
 
-    return BookDTO.from(book);
+    return null;
   }
 
   public BookDTO deleteBook(String a_sbn) {
     Book book = findBySbn(a_sbn);
-    bookRepository.delete(book);
-    return BookDTO.from(book);
+    if (!book.getSbn().isEmpty()) {
+      bookRepository.delete(book);
+      return BookDTO.from(book);
+    }
+    return null;
   }
 
   private Book findBySbn(String a_sbn) {
-    return bookRepository.findById(a_sbn).orElse(null);
+    return bookRepository.findById(a_sbn).orElse(new Book());
   }
 
   private final BookRepository bookRepository;

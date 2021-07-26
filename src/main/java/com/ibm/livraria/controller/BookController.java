@@ -29,14 +29,14 @@ public class BookController {
 
   @PostMapping
   public ResponseEntity<BookDTO> create(@RequestBody final BookDTO a_book) {
-    // meter a tratativa de erros
     BookDTO response = bookService.addBook(a_book);
-    return new ResponseEntity<BookDTO>(response, HttpStatus.CREATED);
+    if (response != null)
+      return new ResponseEntity<BookDTO>(response, HttpStatus.CREATED);
+    return new ResponseEntity<BookDTO>(response, HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
   @GetMapping
   public ResponseEntity<List<BookDTO>> index() {
-    // meter a tratativa de erros
     List<BookDTO> bookList = bookService.getAllBooks();
     return new ResponseEntity<List<BookDTO>>(bookList, HttpStatus.OK);
   }
@@ -51,17 +51,19 @@ public class BookController {
   }
 
   @PutMapping
-  public ResponseEntity<BookDTO> update(@PathVariable final BookDTO a_sbn) {
-    // meter a tratativa de erros
-    BookDTO response = bookService.editBook(a_sbn);
-    return new ResponseEntity<BookDTO>(response, HttpStatus.OK);
+  public ResponseEntity<BookDTO> update(@RequestBody final BookDTO a_book) {
+    BookDTO response = bookService.editBook(a_book);
+    if (response != null)
+      return new ResponseEntity<BookDTO>(response, HttpStatus.OK);
+    return new ResponseEntity<BookDTO>(response, HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
   @RequestMapping(value = "{a_sbn}", method = RequestMethod.DELETE)
   public ResponseEntity<BookDTO> delete(@PathVariable final String a_sbn) {
-    // meter a tratativa de erros
     BookDTO response = bookService.deleteBook(a_sbn);
-    return new ResponseEntity<BookDTO>(response, HttpStatus.OK);
+    if (response != null)
+      return new ResponseEntity<BookDTO>(response, HttpStatus.OK);
+    return new ResponseEntity<BookDTO>(response, HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
   private final BookService bookService;
