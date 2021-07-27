@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,8 +37,9 @@ public class BookController {
   }
 
   @GetMapping
-  public ResponseEntity<List<BookDTO>> index() {
-    List<BookDTO> bookList = bookService.getAllBooks();
+  public ResponseEntity<List<BookDTO>> index(@RequestParam(defaultValue = "0") Integer pageNo,
+      @RequestParam(defaultValue = "10") Integer pageSize) {
+    List<BookDTO> bookList = bookService.getAllBooks(pageNo, pageSize);
     return new ResponseEntity<List<BookDTO>>(bookList, HttpStatus.OK);
   }
 

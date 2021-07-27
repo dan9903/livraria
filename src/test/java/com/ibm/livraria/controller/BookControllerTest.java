@@ -35,7 +35,7 @@ public class BookControllerTest {
   public void ShouldBeReturnOKandEmptyList_WhenGetAllBooks() {
     List<BookDTO> books = new ArrayList<BookDTO>();
 
-    Mockito.when(this.bookService.getAllBooks()).thenReturn(books);
+    Mockito.when(this.bookService.getAllBooks(0, 10)).thenReturn(books);
 
     RestAssuredMockMvc.given().accept(ContentType.JSON).when().get("/books/").then().statusCode(HttpStatus.OK.value());
 
@@ -125,14 +125,11 @@ public class BookControllerTest {
         .statusCode(HttpStatus.UNPROCESSABLE_ENTITY.value());
   }
   /**
-   * 
-   * fazer o mesmo com o service fazer o mesmo com o repository
+   *
    * 
    * verificar como faz com o postgresql talvez implementar os perfis de dev(H2) e
    * homol(postgresql)
-   * 
-   * rodar no docker
-   * 
+   *
    * se der ver como funciona o spring security lá, e tentar fazer coisas com JWT.
    */
 }

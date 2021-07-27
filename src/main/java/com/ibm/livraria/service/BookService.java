@@ -9,6 +9,9 @@ import com.ibm.livraria.model.dto.BookDTO;
 import com.ibm.livraria.repository.BookRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,7 +24,7 @@ public class BookService {
 
   public BookDTO addBook(BookDTO a_bookDTO) {
     Book book = findBySbn(a_bookDTO.getSbn());
-    if (book.getSbn().isEmpty()) {
+    if (book.getSbn() == null) {
       book = Book.from(a_bookDTO);
       bookRepository.save(book);
       return BookDTO.from(book);
@@ -29,8 +32,10 @@ public class BookService {
     return null;
   }
 
-  public List<BookDTO> getAllBooks() {
-    return StreamSupport.stream(bookRepository.findAll().spliterator(), false).map(BookDTO::from)
+  public List<BookDTO> getAllBooks(Integer pageNo, Integer pageSize) {
+    String sort = "sbn";
+    Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sort));
+    return StreamSupport.stream(bookRepository.findAll(paging).spliterator(), false).map(BookDTO::from)
         .collect(Collectors.toList());
   }
 
@@ -54,7 +59,6 @@ public class BookService {
       bookRepository.save(book);
       return BookDTO.from(book);
     }
-
     return null;
   }
 
