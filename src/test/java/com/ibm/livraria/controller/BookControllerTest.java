@@ -32,7 +32,7 @@ public class BookControllerTest {
   }
 
   @Test
-  public void ShouldBeReturnOKandEmptyList_WhenGetAllBooks() {
+  public void ShouldBeReturnOKandEmptyListWhenGetAllBooks() {
     List<BookDTO> books = new ArrayList<BookDTO>();
 
     Mockito.when(this.bookService.getAllBooks(0, 10)).thenReturn(books);
@@ -42,7 +42,7 @@ public class BookControllerTest {
   }
 
   @Test
-  public void ShouldBeReturnOK_WhenFindBook() {
+  public void ShouldBeReturnOKWhenFindBook() {
     String a_sbn = "98-7812-562-9";
     Mockito.when(this.bookService.getBook(a_sbn)).thenReturn(new BookDTO("98-7812-562-9", "El Cielo Flautista",
         "um livro muito legal escrito ali encima", "Servando Martinez Delrio", 124));
@@ -52,7 +52,7 @@ public class BookControllerTest {
   }
 
   @Test
-  public void ShouldBeReturnNotFound_WhenFindBook() {
+  public void ShouldBeReturnNotFoundWhenFindBook() {
     String sbn = "98-7812-562-5";
 
     Mockito.when(this.bookService.getBook(sbn)).thenReturn(null);
@@ -62,7 +62,7 @@ public class BookControllerTest {
   }
 
   @Test
-  public void ShouldBeReturnSuccess_WhenCreateBook() {
+  public void ShouldBeReturnSuccessWhenCreateBook() {
     BookDTO book = new BookDTO("98-7812-562-7", "El Abuelo de mi tia", "livro de memorias de infancia",
         "Everaldo Martinez", 150);
 
@@ -73,7 +73,7 @@ public class BookControllerTest {
   }
 
   @Test
-  public void ShouldBeReturnUnprocessableEntity_WhenCreateBook() {
+  public void ShouldBeReturnUnprocessableEntityWhenCreateBook() {
     BookDTO book = new BookDTO("98-7812-562-7", "El Abuelo de mi tia", "livro de memorias de infancia",
         "Everaldo Martinez", 150);
 
@@ -84,7 +84,7 @@ public class BookControllerTest {
   }
 
   @Test
-  public void ShouldBeReturnOk_WhenUpdateBook() {
+  public void ShouldBeReturnOkWhenUpdateBook() {
     BookDTO book = new BookDTO("98-7812-562-7", "El Abuelo de mi primo", "livro de memorias de infancia",
         "Everaldo Martinez", 150);
 
@@ -95,7 +95,7 @@ public class BookControllerTest {
   }
 
   @Test
-  public void ShouldBeReturnNotAcceptable_WhenUpdateBook() {
+  public void ShouldBeReturnNotAcceptableWhenUpdateBook() {
     BookDTO book = new BookDTO("98-7812-562-6", "El Abuelo de mi tia", "livro de memorias de infancia",
         "Everaldo Martinez", 150);
 
@@ -106,7 +106,7 @@ public class BookControllerTest {
   }
 
   @Test
-  public void ShouldBeReturnOK_WhenDeleteBook() {
+  public void ShouldBeReturnOKWhenDeleteBook() {
     String isbn = "98-7812-572-6";
 
     Mockito.when(this.bookService.deleteBook(isbn)).thenReturn(new BookDTO());
@@ -116,7 +116,7 @@ public class BookControllerTest {
   }
 
   @Test
-  public void ShouldBeReturnNotAcceptable_WhenDeleteBook() {
+  public void ShouldBeReturnNotAcceptableWhenDeleteBook() {
     String isbn = "98-7812-572-8";
 
     Mockito.when(this.bookService.deleteBook(isbn)).thenReturn(null);
@@ -124,12 +124,4 @@ public class BookControllerTest {
     RestAssuredMockMvc.given().accept(ContentType.JSON).when().delete("/books/{a_isbn}", isbn).then()
         .statusCode(HttpStatus.UNPROCESSABLE_ENTITY.value());
   }
-  /**
-   *
-   * 
-   * verificar como faz com o postgresql talvez implementar os perfis de dev(H2) e
-   * homol(postgresql)
-   *
-   * se der ver como funciona o spring security lá, e tentar fazer coisas com JWT.
-   */
 }
